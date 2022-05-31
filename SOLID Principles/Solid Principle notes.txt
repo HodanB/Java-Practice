@@ -1,0 +1,26 @@
+Responsibilities in programming, we essentially talk about reasons for something to change.
+
+Single Responsibility
+->If a class has a single responsibility, then it only has one reason to change.
+
+-> If we have two reasons to change a class, we should split the functionality into two classes
+
+
+OPEN CLOSE
+= software entities – such as classes, modules, functions and so on – should be open for extension but closed for modification.
+
+->The idea is that it’s often better to make changes to things like classes by adding to or building on top of them 
+	(using mechanisms like subclassing or polymorphism) rather than modifying their code.
+
+
+Liskov Substituiton
+=  Liskov Substitution Principle states that functions which use pointers to base classes (parent classes)
+	 must be able to use objects of derived classes (child classes) without knowing it.
+
+Interface Segregation Principle
+= you shouln't depend on interfaces containing methods that you aren't going to use.
+->  you should only ever have methods inside an interface together if they all need to be implemented at once.
+
+Dependency Inversion
+=  high-level modules shouldn’t depend on low-level modules, but both should depend on shared abstractions.
+-> abstractions should not depend on details (concrete implementations) - instead, details should depend on abstractions
