@@ -2,7 +2,7 @@ insert into Bird(
 	id,
 	age,
 	bird_name,
-	species,
+	species
 )
 values(
 	default,

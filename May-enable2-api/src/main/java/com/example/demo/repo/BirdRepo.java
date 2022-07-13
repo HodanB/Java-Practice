@@ -8,5 +8,5 @@ import com.example.demo.entity.Bird;
 @Repository
 public interface BirdRepo extends JpaRepository<Bird, Integer>{
 
-	Bird findByName(String name);
+	Bird findByNameStartingWithIgnoreCase(String name);
 }

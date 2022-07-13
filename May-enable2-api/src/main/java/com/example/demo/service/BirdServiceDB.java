@@ -1,4 +1,5 @@
 package com.example.demo.service;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class BirdServiceDB implements BirdService {
 	@Override
 	public Bird findByName(String name) {
 		
-		return this.repo.findByName(name);
+		return this.repo.findByNameStartingWithIgnoreCase(name);
 	}
 
 }

@@ -24,6 +24,13 @@ public class Bird {
 
 	}
 
+	public Bird(String name, String species, int age) {
+		super();
+		this.name = name;
+		this.species = species;
+		this.age = age;
+	}
+
 	public Bird(Integer id,String name, String species, int age) {
 		super();
 		this.id = id;
