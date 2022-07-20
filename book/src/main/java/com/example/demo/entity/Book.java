@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -94,57 +96,30 @@ public class Book {
 		this.releaseYear = releaseYear;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + this.pages;
-		result = prime * result + ((this.title == null) ? 0 : this.title.hashCode());
-		result = prime * result + ((this.author == null) ? 0 : this.author.hashCode());
-		result = prime * result + ((this.genre == null) ? 0 : this.genre.hashCode());
-		result = prime * result + ((this.releaseYear == null) ? 0 : this.releaseYear.hashCode());
-		return result;
-	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Book other = (Book) obj;
-		if (this.pages != other.pages)
-			return false;
-		if (this.title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!this.title.equals(other.title))
-			return false;
-		if (this.author == null) {
-			if (other.author != null)
-				return false;
-		} else if (!this.author.equals(other.author))
-			return false;
-		if (this.genre == null) {
-			if (other.genre != null)
-				return false;
-		} else if (!this.genre.equals(other.genre))
-			return false;
-		if (this.releaseYear == null) {
-			if (other.releaseYear != null)
-				return false;
-		} else if (!this.releaseYear.equals(other.releaseYear))
-			return false;
-		return true;
-	}
 
+//	@Override
+//	public int hashCode() {
+//		return Objects.hash(author, genre, id, pages, releaseYear, title);
+//	}
+//
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		Book other = (Book) obj;
+//		return Objects.equals(author, other.author) && Objects.equals(genre, other.genre)
+//				&& Objects.equals(id, other.id) && pages == other.pages
+//				&& Objects.equals(releaseYear, other.releaseYear) && Objects.equals(title, other.title);
+//	}
+	
 	@Override
 	public String toString() {
 		return "Book [id=" + id + ", title=" + title + ", author=" + author + ", genre=" + genre + ", pages=" + pages
 				+ ", releaseYear=" + releaseYear + "]";
 	}
-	
-	
 
 }

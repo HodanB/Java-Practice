@@ -31,12 +31,7 @@ public class BookController {
 
 
 
-	//demo
-		@GetMapping("/demoBook") 
-		public Book getDemoBook() {
-			return new Book( "Harry Potter and the Goblet of Fire", "J. K. Rowling", "Fantasy", 636, "2000");
-		}
-
+	
 //		to find a book from the reading list using ID
 		@GetMapping("/getBook/{id}")
 		public Book getById(@PathVariable int id) {
@@ -47,7 +42,11 @@ public class BookController {
 		public Book getByTitle(@PathVariable String title) {
 			return this.service.findByTitle(title);
 		}
-
+//		to find a book from the reading list using AUTHOR
+		@GetMapping("/getBookByAuthor/{author}")
+		public Book getByAuthor(@PathVariable String author) {
+			return this.service.findByAuthor(author);
+		}
 		
 //		to find all books from the reading list
 		@GetMapping("/getBooks")

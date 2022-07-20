@@ -9,4 +9,5 @@ import com.example.demo.entity.Book;
 public interface BookRepo extends JpaRepository<Book, Integer>{
 
 	Book findByTitleStartingWithIgnoreCase(String title);
+	Book findByAuthorStartingWithIgnoreCase(String author);
 }

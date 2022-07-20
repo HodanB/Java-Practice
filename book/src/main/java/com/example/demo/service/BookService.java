@@ -11,6 +11,8 @@ public interface BookService {
 	List<Book> getAll();
 	
 	Book findByTitle(String title);
+	
+	Book findByAuthor(String author);
 
 	Book create(Book book);
 
