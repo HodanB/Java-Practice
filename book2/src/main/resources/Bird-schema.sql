@@ -1,7 +1,0 @@
-DROP TABLE IF EXISTS `bird` CASCADE;
-create table `bird` (
-	`id` INTEGER UNIQUE PRIMARY KEY AUTO_INCREMENT,
-	`age` INTEGER,
-	`bird_name` VARCHAR(255) NOT NULL, 
-	`species` VARCHAR(255)
-);
