@@ -65,7 +65,7 @@ public class BookController {
 		}
 		
 //		to update a book from the reading list
-		@PatchMapping("/updateDino/{id}")
+		@PatchMapping("/updateBook/{id}")
 		public Book update(@PathVariable("id") int id, @PathParam("title") String title,
 				@PathParam("author") String author, @PathParam("genre") String genre, 
 				@PathParam("pages") Integer pages, @PathParam("releaseYear") String releaseYear) {
