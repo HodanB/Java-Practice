@@ -8,12 +8,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -21,19 +23,18 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
 
-import com.example.demo.entity.Bird;
+import com.example.demo.entity.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment= WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc // sets up the testing class
-@Sql(scripts = {"classpath:Bird-schema.sql",
-		"classpath:Bird-data.sql"}, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = { "classpath:books-schema.sql",
+		"classpath:books-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
-public class BirdControllerIntegrationTest {
+public class BookControllerIntegrationTest {
 
 	@Autowired
 	private MockMvc mvc;
@@ -44,37 +45,36 @@ public class BirdControllerIntegrationTest {
 
 	@Test
 	void testCreate() throws Exception {
-		Bird testBird = new Bird("Bart", "Pigeon", 114);
-		String testBirdAsJSON = this.mapper.writeValueAsString(testBird);
-		RequestBuilder req = post("/createBird").content(testBirdAsJSON).contentType(MediaType.APPLICATION_JSON);
+		Book testBook = new Book("Harry Potter and the Goblet of Fire", "J. K. Rowling", "Fantasy", 636, "2000");
+		String testBookAsJSON = this.mapper.writeValueAsString(testBook);
+		RequestBuilder req = post("/createBook").content(testBookAsJSON).contentType(MediaType.APPLICATION_JSON);
 
-		ResultMatcher checkStatus = MockMvcResultMatchers.status().is(201);
-		Bird createdBird = new Bird(2, "Bart", "Pigeon", 114);
-		String createdBirdAsJSON = this.mapper.writeValueAsString(createdBird);
-		ResultMatcher checkBody = MockMvcResultMatchers.content().json(createdBirdAsJSON);
+		ResultMatcher checkStatus = status().is(201);
+		Book createdBook = new Book(2, "Harry Potter and the Goblet of Fire", "J. K. Rowling", "Fantasy", 636, "2000");
+		String createdBookAsJSON = this.mapper.writeValueAsString(createdBook);
+		ResultMatcher checkBody = content().json(createdBookAsJSON);
 
 		this.mvc.perform(req).andExpect(checkStatus).andExpect(checkBody);
 	}
-	
+
 	@Test
 	void testRead() throws Exception {
-		List<Bird> birds = List.of(new Bird(1, "Homer", "Dodo_Bird", 112));
-		this.mvc.perform(get("/getBirds")).andExpect(status().isOk())
-				.andExpect(content().json(this.mapper.writeValueAsString(birds)));
+		List<Book> books = new ArrayList<>();
+		books.add(new Book(1, "Cookie", "Jacqueline_Wilson", "Children", 320, "2008"));
+		this.mvc.perform(get("/getBooks")).andExpect(status().isOk())
+				.andExpect(content().json(this.mapper.writeValueAsString(books)));
+	
 	}
 
 	@Test
 	void testUpdate() throws Exception {
-		Bird updated = new Bird(1, "Marge", "Seagull", 94);
-		this.mvc.perform(patch("/updateBird/1?name=Marge&species=Seagull&age=94")).andExpect(status().isOk())
+		Book updated = new Book(1, "Cookie", "Jacqueline_Wilson", "Horror", 320, "2008");
+		this.mvc.perform(patch("/updateBook/1?title=Cookie&author=Jacqueline_Wilson&genre=Horror&pages=320&releaseYear=2008")).andExpect(status().isOk())
 				.andExpect(content().json(this.mapper.writeValueAsString(updated)));
 	}
 
 	@Test
 	void testDelete() throws Exception {
-		this.mvc.perform(delete("/removeBird/1")).andExpect(status().isNoContent());
+		this.mvc.perform(delete("/removeBook/1")).andExpect(status().isNoContent());
 	}
 }
-
-
-	

@@ -31,7 +31,7 @@ public class BirdController {
 
 
 	@GetMapping("/demoBird")
-	public Bird getDemoDino() {
+	public Bird getDemoBird() {
 		return new Bird(1, "Lisa", "Seagul", 94);
 	}
 
