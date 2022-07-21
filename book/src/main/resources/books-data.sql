@@ -1,4 +1,4 @@
-insert into books(
+insert into book(
 	title,
 	author,
 	genre,

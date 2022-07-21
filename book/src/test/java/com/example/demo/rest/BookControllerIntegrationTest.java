@@ -23,11 +23,14 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 import com.example.demo.entity.Book;
+import com.example.demo.repo.BookRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @SpringBootTest(webEnvironment= WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc // sets up the testing class
@@ -41,8 +44,7 @@ public class BookControllerIntegrationTest {
 
 	@Autowired
 	private ObjectMapper mapper;
-
-
+	
 	@Test
 	void testCreate() throws Exception {
 		Book testBook = new Book("Harry Potter and the Goblet of Fire", "J. K. Rowling", "Fantasy", 636, "2000");
@@ -67,6 +69,27 @@ public class BookControllerIntegrationTest {
 	}
 
 	@Test
+	void testReadByTitle() throws Exception {
+			Book found = new Book (1, "Cookie", "Jacqueline_Wilson", "Children", 320, "2008");
+			this.mvc.perform(get("/getBookByTitle/Cookie")).andExpect(status().isOk())
+			.andExpect(content().json(this.mapper.writeValueAsString(found)));
+		}
+
+
+	@Test
+	void testReadById() throws Exception {
+		Book books = new Book(1, "Cookie", "Jacqueline_Wilson", "Children", 320, "2008");
+		this.mvc.perform(get("/getBook/1")).andExpect(status().isOk())
+			.andExpect(content().json(this.mapper.writeValueAsString(books)));
+	}
+	@Test
+	void testReadByAuthor() throws Exception {
+		Book found = new Book(1, "Cookie", "Jacqueline_Wilson", "Children", 320, "2008");
+		this.mvc.perform(get("/getBookByAuthor/Jacqueline_Wilson")).andExpect(status().isOk())
+			.andExpect(content().json(this.mapper.writeValueAsString(found)));
+	}
+
+	@Test
 	void testUpdate() throws Exception {
 		Book updated = new Book(1, "Cookie", "Jacqueline_Wilson", "Horror", 320, "2008");
 		this.mvc.perform(patch("/updateBook/1?title=Cookie&author=Jacqueline_Wilson&genre=Horror&pages=320&releaseYear=2008")).andExpect(status().isOk())
@@ -77,4 +100,5 @@ public class BookControllerIntegrationTest {
 	void testDelete() throws Exception {
 		this.mvc.perform(delete("/removeBook/1")).andExpect(status().isNoContent());
 	}
+	
 }

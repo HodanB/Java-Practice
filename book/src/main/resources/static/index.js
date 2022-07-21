@@ -1,82 +1,95 @@
-'use strict';
+"use strict";
 
-const output = document.getElementById('output');
+document.querySelector("form").addEventListener("submit", function (event) {
+    event.preventDefault(); // turns off the page refresh/redirect
 
-document.getElementById('birdForm').addEventListener("submit", function (event) {
-    event.preventDefault();
+    console.log("THIS:", this);
 
-    const form = event.target;
 
-    const bird = {
-        name: form.birdName.value,
-        age: form.birdAge.value,
-        species: form.birdSpecies.value,
-    }
+const form = event.target;
+const book = {
+title: form.title.value,
+author: form.author.value,
+genre: form.genre.value,
+pages: form.pages.value,
+releaseYear: form.releaseYear.value,
+}
 
-    axios.post("/createBird", bird)
-        .then(res => {
-            console.log("RESPONSE: ", res);
-            form.birdName.focus();
-            form.reset();
-            renderBirds();
-        })
-        .catch(err => console.error(err));
 
-    console.log("bird: ", bird);
+axios.post("http://localhost:8080/createBook", book)
+.then(res => {
+    console.log("RESPONSE: ", res);
+    form.title.focus();
+    form.reset();
+    console.log("success");
+    renderBooks();
+})
+.catch(err => console.error(err));
+console.log("Book: ", book);
+
 });
 
-function renderBirds() {
-    axios.get("/getBirds")
+function renderBooks() {
+    axios.get("http://localhost:8080/getBooks")
         .then(res => {
-            console.log("birdS: ", res.data);
-            output.innerHTML = "";
-            for (let bird of res.data) {
-                const birdCol = document.createElement("div");
-                birdCol.className = "col";
+        console.log("books: ", res.data);
+        output.innerHTML = "";
+        for (let book of res.data) {
+            const bookCol = document.createElement("div");
+                bookCol.className = "col";
+    
+            const bookCard = document.createElement("div");
+                bookCard.className = "card";
+                bookCol.appendChild(bookCard);
+      
+            const bookDiv = document.createElement("div");
+                bookDiv.className = "card-body";
+                bookCard.appendChild(bookDiv);
+      
+            const bookTitle = document.createElement("h2");
+                bookTitle.innerText = book.title;
+                bookDiv.appendChild(bookTitle);
+    
+            const bookAuthor = document.createElement("p");
+                bookAuthor.innerText = book.author;
+                bookDiv.appendChild(bookAuthor);
 
-                const birdCard = document.createElement("div");
-                birdCard.className = "card";
-                birdCol.appendChild(birdCard);
+            const bookGenre = document.createElement("p");
+                bookGenre.innerText = book.genre;
+                bookDiv.appendChild(bookGenre);
+        
+            const bookPages = document.createElement("p");
+                bookPages.innerText = book.pages + " pages.";
+                bookDiv.appendChild(bookPages);
 
-                const birdDiv = document.createElement("div");
-                birdDiv.className = "card-body";
-                birdCard.appendChild(birdDiv);
+            const bookreleaseYear = document.createElement("p");
+                 bookreleaseYear.innerText = book.releaseYear;
+                bookDiv.appendChild(bookreleaseYear);
 
-                const birdName = document.createElement("h2");
-                birdName.innerText = bird.name;
-                birdDiv.appendChild(birdName);
+            const bookDelete = document.createElement("button");
+                bookDelete.innerText = "Remove";
+                bookDelete.addEventListener("click", function () {
+                deleteBook(book.id);
+        
+            });     
+        
+            bookDiv.appendChild(bookDelete);
+        
+            output.appendChild(bookCol);
+        }
+    })
 
-                const birdAge = document.createElement("p");
-                birdAge.innerText = bird.age + " years old.";
-                birdDiv.appendChild(birdAge);
+    .catch(err => console.error(err));
 
-                const birdSpecies = document.createElement("p");
-                birdSpecies.innerText = bird.species;
-                birdSpecies.classList.add("btn", "btn-alert");
-                birdDiv.appendChild(dinoSpecies);
-
-                const birdDelete = document.createElement("button");
-                birdDelete.innerText = "DESTROY";
-                birdDelete.addEventListener("click", function () {
-                    deleteBird(bird.id);
-                });
-
-                birdDiv.appendChild(birdDelete);
-
-                output.appendChild(birdCol);
-            }
-        })
-        .catch(err => console.error(err));
 }
-
-function deleteBird(id) {
-    axios.delete("/removeBird/" + id)
+function deleteBook(id) {
+    axios.delete("http://localhost:8080/removeBook/" + id)
         .then(res => {
-            console.log(res);
-            renderBirds();
-        })
-        .catch(err => console.error(err));
-}
-
-
-renderBirds();
+                console.log(res);
+                 renderBooks();
+    
+            })
+            .catch(err => console.error(err));
+ }
+     
+    renderBooks();
